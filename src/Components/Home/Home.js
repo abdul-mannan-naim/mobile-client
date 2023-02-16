@@ -1,18 +1,30 @@
 import React from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import Banner from './Banner';
+import Footer from './Footer';
+import TextBox from './TextBox';
+
 
 const Home = () => {
+    const [user, loading, error] = useAuthState(auth)
     return (
-        <div> 
+        <div>
             <div>
-                <p> Lorem ipsum dolor sit
-                    amet consectetur adipisicing
-                    elit. Veniam quae quo minima
-                    consectetur est aperiam nobis
-                    quis velit blanditiis ea. Atque
-                    et optio nostrum labore excepturi
-                    quia saepe ab quibusdam?
-                </p>
-            </div> 
+                {
+                    user ? <>  <p className='text-2xl text-primary font-bold '>  Welcome to Solis
+                    </p> </> : <>
+                        You Didn't logged in
+                    </>
+                }
+            </div>
+            <div className='flex justify-center'>
+                <TextBox></TextBox>
+            </div>
+            <div> 
+            <Banner></Banner>
+            <Footer></Footer>
+            </div>
         </div>
     );
 };

@@ -15,7 +15,8 @@ const UpdateProduct = ({ manages, setManages }) => {
 
     const onSubmit = data => {
         const price = parseInt(data.price)
-        const totalQuantity =data.quantity;
+        const totalQuantity = data.quantity;
+        const minQuantity =data.minQuantity;
         console.log(data)
         let image = data.file[0]
         const formData = new FormData();
@@ -40,19 +41,20 @@ const UpdateProduct = ({ manages, setManages }) => {
                                 rater: user.email,
                             }
                         ],
-                        totalOrder:[0],
+                        totalOrder: [0],
                         totalQuantity: totalQuantity,
+                        minQuantity,
                         description: data.description,
                         img: img
                     }
                     fetch(`http://localhost:5000/update/${_id}`, {
                         method: "PUT",
                         headers: {
-                            "content-type": "application/json", 
+                            "content-type": "application/json",
                         },
                         body: JSON.stringify(product)
                     })
-                        .then(res => res.json() )
+                        .then(res => res.json())
                         .then(data => {
                             console.log(data)
                             setManages(null)
@@ -143,15 +145,37 @@ const UpdateProduct = ({ manages, setManages }) => {
                                     <input type="number" placeholder='Product Quantity '
                                         className='input input-bordered w-full max-w-lg my-2'
                                         {...register("quantity", {
-                                            minLength: {
+                                            min: {
                                                 value: 1,
                                                 message: "Quantity Should be 1 Character"
-                                            }
+                                            },
+                                            required: {
+                                                value: true,
+                                                message: "implement The product quantity"
+                                            },
                                         })}
                                     />
-                                    <label >{errors.quality?.type === "minLength" && <span> {errors.quality.message} </span>}</label>
+                                    <label >{errors.quantity?.type === "min" && <span> {errors.quantity.message} </span>}</label>
+                                    <label >{errors.quantity?.type === "required" && <span> {errors.quantity.message} </span>}</label>
                                 </div>
-
+                                <div>
+                                    <label htmlFor=""></label>
+                                    <input type="number" placeholder='Minimum Order Quantity '
+                                        className='input input-bordered w-full max-w-lg my-2'
+                                        {...register("minQuantity", {
+                                            min: {
+                                                value: 1,
+                                                message: "You must declare minimum quantity "
+                                            },
+                                            required: {
+                                                value: true,
+                                                message: "implement The product minimum quantity"
+                                            },
+                                        })}
+                                    />
+                                    <label >{errors.minQuantity?.type === "min" && <span> {errors.minQuantity.message} </span>}</label>
+                                    <label >{errors.minQuantity?.type === "required" && <span> {errors.minQuantity.message} </span>}</label>
+                                </div>
                                 <div className='my-2'>
                                     <textarea
                                         {...register("description", { required: true })}

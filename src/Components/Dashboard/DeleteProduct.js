@@ -11,13 +11,13 @@ const DeleteProduct = ({ manages }) => {
         await fetch(`http://localhost:5000/delete/${_id}`, {
             method: "delete",
             headers: {
-                "content-type": "application/json", 
+                "content-type": "application/json",
             }
         })
-            .then(res =>  res.json())
+            .then(res => res.json())
             .then(data => {
                 console.log(data);
-                
+
             })
 
     }

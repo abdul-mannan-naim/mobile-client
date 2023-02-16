@@ -13,7 +13,8 @@ const AddProduct = () => {
 
     const onSubmit = data => {
         const price = parseInt(data.price)
-        const totalQuantity =data.quantity;
+        const totalQuantity = data.quantity;
+        const minQuantity =data.minQuantity;
         // console.log(data.file[0]);
         const image = data.file[0]
         const formData = new FormData();
@@ -27,20 +28,20 @@ const AddProduct = () => {
                 console.log(result)
                 if (result.success) {
                     const img = result.data.url;
-                    let rating = 5
-
-                    const product = { 
+                    let rating = 5 
+                    const product = {
                         name: data.name,
                         price: price,
                         quality: data.quality,
-                        rating:[
+                        rating: [
                             {
-                                rating:rating,
-                                rater:user.email,
+                                rating: rating,
+                                rater: user.email,
                             }
-                        ], 
-                        totalOrder:[0],
+                        ],
+                        totalOrder: [0],
                         totalQuantity: totalQuantity,
+                        minQuantity,
                         img: img,
                         description: data.description
                     }
@@ -100,7 +101,7 @@ const AddProduct = () => {
                             <label htmlFor="">  </label>
                             <input type="text" placeholder='Product Quality '
                                 className='input input-bordered w-full max-w-lg my-2'
-                                {...register("quality", {
+                                {...register("quality", {         
                                     required: {
                                         value: true,
                                         message: "implement The product quality"
@@ -120,14 +121,37 @@ const AddProduct = () => {
                             <label htmlFor="">  </label>
                             <input type="number" placeholder='Product Quantity '
                                 className='input input-bordered w-full max-w-lg my-2'
-                                {...register("quantity", { 
-                                    minLength: {
+                                {...register("quantity", {
+                                    min: {
                                         value: 1,
                                         message: "Quantity Should be 1 Character"
-                                    } 
+                                    },
+                                     required: {
+                                        value: true,
+                                        message: "implement The product quantity"
+                                    },
                                 })}
-                            /> 
-                            <label >{errors.quality?.type === "minLength" && <span> {errors.quality.message} </span>}</label> 
+                            />
+                            <label >{errors.quantity?.type === "min" && <span> {errors.quantity.message} </span>}</label>
+                            <label >{errors.quantity?.type === "required" && <span> {errors.quantity.message} </span>}</label>
+                        </div>
+                        <div>
+                            <label htmlFor=""></label>
+                            <input type="number" placeholder='Minimum Order Quantity '
+                                className='input input-bordered w-full max-w-lg my-2'
+                                {...register("minQuantity", {
+                                    min: {
+                                        value: 1,
+                                        message: "You must declare minimum quantity "
+                                    },
+                                    required: {
+                                        value: true,
+                                        message: "implement The product minimum quantity"
+                                    },
+                                })}
+                            />
+                            <label >{errors.minQuantity?.type === "min" && <span> {errors.minQuantity.message} </span>}</label>
+                            <label >{errors.minQuantity?.type === "required" && <span> {errors.minQuantity.message} </span>}</label>
                         </div>
 
                         <div>
